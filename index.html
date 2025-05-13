@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>夜市呷透透</title>
+  <style>
+    body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans TC', sans-serif;
+  background-image: url('00.png'); /* 你的夜市圖 */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+/* 加一層透明黑色遮罩 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); /* 可調透明度 */
+  backdrop-filter: blur(4px); /* 模糊背景 */
+  z-index: -1; /* 在背景，不擋住內容 */
+}
+
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fffaf3;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    h1, h3 {
+    color: #d84315; /* 熱情橘紅 */
+    }
+    h2 {
+    color: #fff;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    font-size: 2.5em;
+  }
+
+    a {
+      color: #ff7043;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    header {
+      background-color: #D64545;  /* 暗紅 */
+      color: #fff;             /* 配金色文字 */
+
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+.search-bar input {
+  border: 2px solid #ff7575;
+  border-radius: 25px;
+  padding: 10px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #ffae00;
+  box-shadow: 0 0 8px rgba(255,174,0,0.5);
+}
+
+.search-bar button {
+  background: linear-gradient(to right, #ff7b00, #ff416c);
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.search-bar button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255,65,108,0.6);
+}
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+    .nav a {
+      font-size: 18px;
+      margin: 0 12px;
+      position: relative;
+        }
+
+    .nav a:hover::after,
+    .nav a.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 3px;
+      background-color: white;
+    }
+
+    main {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .top-right {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .food-card {
+      width: calc(33.33% - 20px);
+      background-color: #fff7f7;
+      border: 1px solid #ccc;
+      padding: 15px;
+      box-sizing: border-box;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    .food-card img {
+      width: 100%;
+      height: 200px; /* 可依需求調整 */
+      object-fit: cover; /* 裁切圖片保持比例不變 */
+      border-radius: 8px;
+    }
+    .food-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.food-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+
+    .food-card a {
+      color: #ff6b6b;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .food-card {
+        width: 100%;
+      }
+    }
+
+    .filter-bar {
+      background-color:rgba(30, 30, 30, 0.7); /* 柔和橘色背景 */
+      border: 1px solid rgba(30, 30, 30, 0.8);
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin: 20px auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', sans-serif;
+    }
+   
+    /* 標籤文字 */
+    .filter-bar label {
+      font-weight: bold;
+      margin-right: 5px;
+      color: #fff;
+    }
+
+    /* 下拉選單樣式 */
+    .filter-bar select {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      min-width: 120px;
+      background-color: #fff;
+      transition: border-color 0.2s;
+    }
+
+    .filter-bar select:focus {
+      border-color: #ff9800;
+      outline: none;
+    }
+
+    /* 統計數字 */
+    #resultCount {
+      margin-left: 15px;
+      font-weight: bold;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .welcome-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    color: #FF5722; /* 橘紅色，有夜市活力感 */
+    margin-top: 30px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    border-bottom: 2px solid #FF9800;
+    display: inline-block;
+    padding-bottom: 8px;
+  }
+
+  .welcome-desc {
+    font-size: 18px;
+    color: #444;
+    text-align: center;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+  }
+  .subtitle {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: inline-block;
+  color: white;
+}
+  .logo {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 900;
+  font-size: 1.8rem;
+  background: linear-gradient(to right, #ffcb57, #ff5f5f);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">夜市呷透透</div>
+
+    <div class="top-right">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="搜尋夜市美食...">
+        <button id="searchBtn">搜尋</button
+      </div>
+      
+    </div>
+  </header>
+
+  <main>
+    <h2 class="welcome-title">歡迎來到夜市呷透透！</h2>
+    <p class="subtitle">這裡收錄了台中各地夜市的必吃美食、人氣攤販與地圖資訊。</p>
+
+
+    <!-- 新增：分類選單與結果顯示 -->
+    
+    <div class="filter-bar">
+      <label for="marketSelect">選擇夜市：</label>
+      <select id="marketSelect">
+        <option value="">全部夜市</option>
+        <option value="逢甲夜市">逢甲夜市</option>
+        <option value="一中街夜市">一中街夜市</option>
+        <option value="忠孝路夜市">忠孝路夜市</option>
+        <option value="大慶夜市">大慶夜市</option>
+        <option value="中華路夜市">中華路夜市</option>
+        <option value="豐原廟東夜市">豐原廟東夜市</option>
+        <option value="東海夜市">東海夜市</option>
+        <option value="旱溪夜市">旱溪夜市</option>
+        <option value="梧棲中港觀光夜市">梧棲中港觀光夜市</option>
+        <option value="總站夜市">總站夜市</option>
+      </select>
+      <!-- 食物類型 -->
+      <label for="typeSelect">類型：</label>
+      <select id="typeSelect">
+        <option value="">全部</option>
+        <option value="甜點">甜點</option>
+        <option value="飲料">飲料</option>
+        <option value="小吃">小吃</option>
+        <option value="主食">主食</option>
+      </select>
+
+      <!-- 價格篩選 -->
+      <label for="priceSelect">價格區間：</label>
+      <select id="priceSelect">
+        <option value="">全部</option>
+        <option value="1">0~100元</option>
+        <option value="2">101~200元</option>
+        <option value="3">201元以上</option>
+      </select>
+
+      <span id="resultCount">共 10 筆</span>
+    </div>
+  </div>
+    <section style="padding: 2rem;">
+      <h2>精選夜市美食推薦 🍢</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem;">
+        <div class="card-container">
+
+      <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="50">
+
+      <!-- 卡片1：逢甲夜市 -->
+      
+        <h3>逢甲夜市 — 明倫蛋餅</h3>
+        <img src="01.png" alt="明倫蛋餅">
+        <p><strong>價格：</strong>50元/份</p>
+        <p>營業時間:週一~週五15:00~00:00, 週六~週日11:30~00:30</p>
+        <p>地址:台中市西屯區福星路546號。</p>
+         <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=台中市西屯區福星路546號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>明倫蛋餅可以說是來逢甲必吃的人氣美食,蛋餅皮厚實Q彈,帶有節奏獨特,特製的甜辣醬讓蛋餅好加分,蛋餅控必吃!並提供４種口味選擇，包括獨門甜辣醬、胡椒粉、辣椒粉和醬油；想要品嘗的話，記得先拿號碼牌。首次嘗鮮的朋友，推薦必點「獨門甜辣醬」，現煎的蛋餅麵皮薄嫩微焦，雞蛋的香氣與青蔥的清香交織，淋上微微甜辣的醬料，簡單的古早味卻讓人吃得十分滿足。</p>
+
+      </div>
+      <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="100">
+        <h3>逢甲夜市 — 惡魔雞排</h3>
+        <img src="11.png" alt="惡魔雞排">
+        <p><strong>價格：</strong>100元/塊</p>
+        <p>營業時間:星期一~星期五17:00~22:30,星期六~星期日16:30~23:00</p>
+        <p>地址:台中市西屯區文華路71號歡樂星廣場內D9攤位。</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=台中市西屯區文華路71號歡樂星廣場內D9攤位" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>現炸的惡魔雞排,肉厚多汁,剛拿到的時候趁熱吃最好吃!但是注意別咬太大口,因為真的會有肉汁噴出來燙到嘴巴,喜歡吃雞排的朋友來逢甲可以吃吃看!惡魔雞排以現點現炸的方式為主，提供原味和辣味共２種口味。不管從哪個角度看，都能看到雞排超高的厚度，咬下去外皮卡滋作響，內裡的雞肉多汁鹹香，每一口都令人滿足。尤其是加辣後，雞肉的鹹甜更具勁道，讓人忍不住想再來１塊。</p>
+      </div>
+       <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="70">
+        <h3>逢甲夜市 — 官芝霖大腸包小腸</h3>
+        <img src="12.png" alt="官芝霖大腸包小腸">
+        <p><strong>價格：</strong>70元/份</p>
+        <p>營業時間:星期一~星期四12:00-00:00,星期五、日 12:00-00:30,星期六12:00~01:00</p>
+        <p>地址:台中市西屯區逢甲路20巷1號。</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區逢甲路20巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>是逢甲超人氣排隊美食,有原味、小辣、大辣、黑胡椒、哇沙米、蒜味等6種口味可以選擇。創立至今已經超過15年，算是夜市內的老攤長青樹。招牌推薦最多人點的蒜味、每日限量100份的黑胡椒口味，基本配料包含菜脯蛋、酸菜、小黃瓜，依口味不同還會加入洋蔥、蒜頭等，配料塞好塞滿，米腸煎到外皮脆脆，香腸帶有中藥香，肉汁的甜搭配脆口外皮及配料，口感豐富超滿足，就像在吃「台式大亨堡」。</p>
+      </div>
+      <div class="food-card" data-market="逢甲夜市" data-type="主食" data-price="80">
+        <h3>逢甲夜市 — 當歸鴨麵線</h3>
+        <img src="13.png" alt="當歸鴨麵線">
+        <p><strong>價格：</strong>60～80元/碗</p>
+        <p>營業時間:星期一~星期日 18:30-01:00</p>
+        <p>地址:台中市西屯區文華路5巷6號。</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=台中市西屯區文華路5巷6號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>這家肉多且嫩,最厲害的是湯頭入味喝起來相當滑順,冬天來上一碗實在是好幸福,是超級推薦的逢甲必吃美食。這家店的菜單以當歸為主，提供當歸鴨、當歸豬腳、當歸脆腸、當歸下水等多樣選擇，價格算是非常親民，是逢甲夜市中不可錯過的美食之一。不僅吃得到鮮嫩Q彈的鴨肉，還有鮮甜的當歸湯頭，絕對是來逢甲夜市必須一試的美食。</p>
+      </div>
+       <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="60">
+        <h3>逢甲夜市 — 一心素食臭豆腐</h3>
+        <img src="14.png" alt="一心素食臭豆腐">
+        <p><strong>價格：</strong>60/份</p>
+        <p>營業時間:星期二~星期五、星期日16:00~23:00,星期六16:00~00:00(星期一休息)</p>
+        <p>地址:台中市西屯區福星路461巷號。</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區福星路461巷號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>不管內用或外帶都要先排隊點餐付款,拿了號碼牌之後再等候取餐。
+        假日晚上需要等比較久的時間,內用空間狹小有點擠,菜單很簡單,只有臭豆腐、麵線和泡菜三項。
+        一心素食臭豆腐是逢甲夜市中的美食「人氣扛霸子」，幾乎隨時都有長長的排隊人潮。雖然經常一位難求，但翻桌速度相當快，稍等一下就能找到座位。剛炸好的豆腐外酥內嫩，香氣四溢，搭配爽口的泡菜和小黃瓜，讓口感更加豐富。
+        </p>
+      </div>
+        <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="101">
+        <h3>逢甲夜市 — 激旨焼き鳥逢甲二店</h3>
+        <img src="15.png" alt="激旨焼き鳥逢甲二店">
+        <p><strong>價格：</strong>50～169元</p>
+        <p>營業時間:星期日~星期四 17:00~00:30,星期五~星期六17:00-01:00</p>
+        <p>地址:台中市西屯區文華路71號2樓,導航</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區文華路71號2樓" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>若來夜市想吃串燒的話,絕對不能不提這家激旨焼き鳥。以平價且多元的串燒組合吸引了許多饕客。店內的串燒種類豐富，包括牛肉搭配青椒、小番茄、蘋果、水梨、水蓮菜和起司球等創意組合；另外還有豬肉包豆干、豬肉包番茄、牛肉包蔬菜、雞肉包水蓮、秋葵等獨特吃法。
+        </p>
+      </div>
+      <div class="food-card" data-market="逢甲夜市" data-type="甜點" data-price="60">
+        <h3>逢甲夜市 — 大甲芋頭城</h3>
+        <img src="16.png" alt="大甲芋頭城">
+        <p><strong>價格：</strong>45元~60元</p>
+        <p>營業時間:星期日~星期五13:00~23:30,星期六13:00-00:00</p>
+        <p>地址:台中市西屯區福星路461巷2-2號。</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區福星路461巷2-2號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>大甲芋頭城位於一心素食臭豆腐隔壁,是逢甲非常知名的甜湯、冰品店。以芋圓綜合為主打,冷熱都有,芋圓Q彈很好吃,芋頭也很綿密,沒有過多的糖水是用紅豆的甜來點綴整碗冰,好好吃!綿密滑順芋頭、Q彈的珍珠及芋圓，和清爽的剉冰搭在一起，在夏天吃上一口暑意全消，另外它的芋頭西米露和芋頭牛奶也廣受好評，飲料口味偏甜適合螞蟻人，逛夜市經常可以看到人手一杯，推薦給所有芋頭控！
+        </p>
+      </div>
+       <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="90">
+        <h3>逢甲夜市 —黃金左右腿</h3>
+        <img src="17.png" alt="黃金左右腿">
+        <p><strong>價格：</strong>90元/份</p>
+        <p>營業時間:星期日~星期五16:00~23:30,星期六16:00~01:00</p>
+        <p>地址:台中市西屯區文華路12之9號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區文華路12之9號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>黃金右腿是以烘烤方式來料理雞腿,黃金左腿則是炸雞腿，烤雞腿上面鋪滿滿起司，雞腿肉香嫩多汁,配上爽口的高麗菜絲,營養又好吃。
+        </p>
+      </div>
+        <div class="food-card" data-market="逢甲夜市" data-type="主食" data-price="1088">
+        <h3>逢甲夜市 —刁民酸菜魚</h3>
+        <img src="18.png" alt="刁民酸菜魚">
+        <p><strong>價格：</strong>638～1,088元</p>
+        <p>營業時間:週一至週日11:30-02:00</p>
+        <p>地址:台中市西屯區福星路459號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區福星路459號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>重口味的朋友到逢甲必訪餐廳「刁民酸菜魚」，份量超大適合三五好友一起去吃，酸菜魚使用的魚片很嫩，配料包含爽脆的木耳和清爽蘿蔔，酸爽微麻的味道很開胃，會讓人忍不住一直扒飯，生意超好但不接受預訂，建議提前到店取號及候位。店內主打的四川酸菜魚，以其香辣過癮的口味，特別受重口味愛好者的青睞。酸菜魚的分量分為３種，包括適合１～２人的中盛、適合２～３人的大盛，以及適合３～４人的特盛
+        </p>
+      </div>
+       <div class="food-card" data-market="逢甲夜市" data-type="小吃" data-price="55">
+        <h3>逢甲夜市 —日船章魚小丸子</h3>
+        <img src="19.png" alt="日船章魚小丸子">
+        <p><strong>價格：</strong>55元,柴魚、海苔二選一,兩種都加+5元。</p>
+        <p>營業時間:星期一~星期四15:45-00:00,星期五 15:45~00:30,星期六~日15:15~00:30</p>
+        <p>地址:台中市西屯區文華路13號。</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市西屯區文華路13號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>逢甲日船章魚小丸子可是全台眾多分店日船章魚小丸子的創始店,店鋪上大大的藍色章魚非常吸睛。渾圓飽滿的章魚燒,每一口都可以吃到大大的章魚,趁熱吃超好吃。每一顆都有包一段章魚腳，不會像坊間有些都在吃麵糊沒有料的感覺。人潮雖多，但店員動作迅速不會等很久。
+        </p>
+      </div>
+
+
+
+      <div class="food-card" data-market="一中街夜市" data-type="飲料" data-price="40">
+        <h3>一中街夜市 — 豐味綠豆沙牛乳</h3>
+        <img src="02.png" alt="豐味綠豆沙牛乳">
+        <p><strong>價格：</strong>40-55元/份</p>
+        <p>營業時間：週一至週日 12:00-22:00</p>
+        <p>地址：台中市北區太平路63巷1號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北區太平路63巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>以綠豆沙牛乳為招牌，綿密細緻的綠豆沙搭配香濃牛乳，比例調配得恰到好處，每一口都滑順香甜、不膩口，冰冰涼涼超消暑。不只口感出色，價格也相當親民，成為許多學生和在地人一致推薦的必喝飲品。無論是午後解渴，還是逛街配著喝，都超級滿足！綠豆沙牛乳口感綿密，喝起來不會沙沙的很特別，退冰了也一樣好喝；但有點偏甜，要是能調整甜度就更完美了～</p>
+        
+       </div>
+        <div class="food-card" data-market="一中街夜市" data-type="甜點" data-price="150">
+        <h3>一中街夜市 —桐生日式可麗餅</h3>
+        <img src="20.png" alt="桐生日式可麗餅">
+        <p><strong>價格：</strong>150-250元/份</p>
+        <p>營業時間：週二至週日 14:00-21:00（週一公休）</p>
+        <p>地址：台中市北區一中街179巷1號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北區一中街179巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>藏身巷弄中的《桐生日式可麗餅》是甜點控絕不能錯過的高人氣店家！主打日式風格軟式可麗餅，甜鹹口味選擇超多，用料豐富、外觀精緻，從裝潢到餐點都超好拍又好吃，來這裡不只解嘴饞，更是視覺與味覺的雙重享受！食材選用包含了日本進口麵粉、法國生乳，重點在台灣還不斷創新研發許多口味，不得不說柔軟的餅皮和法式酥脆餅皮很不一樣呢！</p>
+        
+       </div>
+        <div class="food-card" data-market="一中街夜市" data-type="主食" data-price="60">
+        <h3>一中街夜市 —哇哉手卷</h3>
+        <img src="21.png" alt="哇哉手卷">
+        <p><strong>價格：</strong>60元/份</p>
+        <p>營業時間：11:30-20:00</p>
+        <p>地址：台中市北區育才街4號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北區育才街4號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>這間哇哉手捲賣的是海苔飯捲，有17種口味可以選，葷的素的通通有，還能選擇要紫米飯或是胚芽米飯，而且不管什麼口味都是均一價。鋪好的飯上放上滿滿的食材，再包進韓式竹鹽海苔就完成了，拿著吃也很方便。便宜的價格對於學生來說真的CP值很高，難怪每到中午總是大排長龍。</p>
+        
+       </div>
+       <div class="food-card" data-market="一中街夜市" data-type="主食" data-price="218">
+        <h3>一中街夜市 —Mr.38咖哩美食餐廳</h3>
+        <img src="22.png" alt="Mr.38咖哩美食餐廳">
+        <p><strong>價格：</strong>218-298元/份</p>
+        <p>營業時間：11:00–21:30 (周一至周日)</p>
+        <p>地址：台中市北區一中街109號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北區一中街109號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>自詡是咖哩界傳奇人物，結合印度咖哩和日本咖哩特色，調配出適合台灣人口味的獨特咖哩。咖哩嫩雞飯、藍帶炸豬排咖哩飯最夯，咖哩濃郁份量多，還附飲料和湯，想在一中街找間餐廳好好用餐就來這吧！因為有著大份量又很平價，在學生族群裡很受歡迎。Mr.38主打咖哩餐點，不管是日式、印度辛辣、泰式綠咖哩應有盡有，還有不同的主菜可以選擇，像是藍帶豬排、菲力牛排等，厚實的炸物跟濃郁的咖哩是絕配，都讓人百吃不膩。</p>
+        
+       </div>
+        <div class="food-card" data-market="一中街夜市" data-type="小吃" data-price="100">
+        <h3>一中街夜市 —上和園滷味</h3>
+        <img src="23.png" alt="上和園滷味">
+        <p><strong>價格：</strong>20-100元/份</p>
+        <p>營業時間：08：00～22：00</p>
+        <p>地址：台中市北區育才街4號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北區育才街4號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>上和園滷味位於一中街最熱鬧的十字路口，鮮明的淡黃色招牌，每天都有絡繹不絕的人潮，屹立不搖超過20年的滷味老店，老闆堅持冷藏保鮮不添加防腐劑。招牌的雞爪凍、雞腳凍、毛豆、豆干、鴨翅、二節翅、翅小腿等，樣樣都滷得非常入味，微微辣味提升口感，讓人一口接一口停不下來，絕對讓你一嚐再嚐，回味無窮。</p>
+        
+       </div>
+        <div class="food-card" data-market="一中街夜市" data-type="小吃" data-price="20">
+        <h3>一中街夜市 —一中無名福州包</h3>
+        <img src="24.png" alt="一中無名福州包">
+        <p><strong>價格：</strong>20元/4個</p>
+        <p>營業時間：12：00～賣完為止</p>
+        <p>地址：台中市北區育才街6巷口</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北區育才街6巷口" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>掛著黃色招牌的小攤位，「一中無名福州包」可是陪伴許多台中學子成長的銅板美食。每天幾乎從中午開始排隊人潮就沒停過，圓滾滾的水煎包，內餡包入鮮甜高麗菜和豬絞肉，老闆還特地選用了台灣自己的豬肉。底部煎的焦黃酥脆，Q彈的外皮鎖住了滿滿的肉汁，一口咬下帶點黑胡椒的香氣 ，5個只要20元真的是超佛心。</p>
+        
+       </div>
+
+       <div class="food-card" data-market="忠孝路夜市" data-type="主食" data-price="20"> 
+        <h3>忠孝路夜市 — 味泉米糕</h3>
+        <img src="03.png" alt="味泉米糕">
+        <p><strong>價格：</strong>20-100元/份</p>
+        <p>營業時間：週一、三至日16：00～23：00（週二休）</p>
+        <p>地址：台中市南區忠孝路151號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區忠孝路151號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>「味泉米糕」是忠孝夜市的老字號店家之一，每到用餐時間幾乎是人潮滿滿，不僅排隊外帶的人非常多，就連內用的座位也幾乎一位難求！是台中市區少數會排隊的米糕專賣店。店內販售的品項以米糕、麵食與湯品為主，有的人從小吃到現在都已經結婚生子了，正是因為這傳統的好滋味，令人念念不忘。</p>
+        
+      </div>
+       <div class="food-card" data-market="忠孝路夜市" data-type="主食" data-price="70"> 
+        <h3>忠孝路夜市 — 沙茶魷魚羹</h3>
+        <img src="25.png" alt="沙茶魷魚羹">
+        <p><strong>價格：</strong>70元/份</p>
+        <p>營業時間：15:00~23:30</p>
+        <p>地址：台中市南區忠孝路94號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區忠孝路94號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>這間忠孝夜市最好吃的沙茶魷魚羹麵，下午５～６點人潮都是排滿滿，建議避開這個時段來購買。招牌魷魚羹每碗65元，魷魚分量多，給得超有誠意，這碗輕輕爽爽的沙茶魷魚羹，搭配麵條就好飽足！除了價格低、份量多之外，料給的也驚人，綜合羹飯內有蝦仁、魷魚、肉絲等。</p>
+        
+      </div>
+      <div class="food-card" data-market="忠孝路夜市" data-type="小吃" data-price="30"> 
+        <h3>忠孝路夜市 —Q禾豐邑地瓜球</h3>
+        <img src="26.png" alt="Q禾豐邑地瓜球">
+        <p><strong>價格：</strong>30-50元/份</p>
+        <p>營業時間：16:30–23:30</p>
+        <p>地址：台中市南區忠孝路 185 號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區忠孝路 185 號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>轉角這攤Q禾豐邑地瓜球！四點半營業就開始排隊，已經默默在地賣16年，地瓜球使用台農57號地瓜，從清洗、切塊到揉成糰都手工製作，炸地瓜球是一顆顆壓彈，在現場看超療癒的。他們家地瓜球整個薄脆，但又富有咬勁，不油膩的呈現讓整個美味度更升級～</p>
+        
+      </div>
+      <div class="food-card" data-market="忠孝路夜市" data-type="主食" data-price="100">  
+        <h3>忠孝路夜市 —熊家湯包</h3>
+        <img src="27.png" alt="熊家湯包">
+        <p><strong>價格：</strong>40-150元/份</p>
+        <p>營業時間：平日 15:00–21:30/假日 11:00–14:00、16:00–21:30</p>
+        <p>地址：台中市南區忠孝路 179 號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區忠孝路 179 號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>餐點以外帶為主，沒有提供內用座位區。湯包都是師傅們一顆顆純手工現包，現點現蒸，想吃要有耐心。菜單除了湯包，還有燒賣、糯米雞等港式點心，品項還滿豐富的。每份有７顆，用料相當實在，讓扎實的內餡多了蝦肉的Q彈及鮮味。</p>
+        
+      </div>
+      <div class="food-card" data-market="忠孝路夜市" data-type="飲料" data-price="35"> 
+        <h3>忠孝路夜市 —炎伯紅茶</h3>
+        <img src="28.png" alt="炎伯紅茶">
+        <p><strong>價格：</strong>35-80元/杯</p>
+        <p>營業時間：09:00–00:30</p>
+        <p>地址：台中市南區忠孝路196-4號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區忠孝路196-4號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>除了紅茶冰厲害外，聽說現打果汁系列也很讚，基本款都會點一杯紅茶冰重量杯的，其他也有賣奶茶、樣樂多系列、楊桃系列、酸梅系列等，選項很多樣化。紅茶喝起來會回甘不苦澀，越喝越好喝，越喝越上癮那種感覺。</p>
+        
+      </div>
+      <div class="food-card" data-market="忠孝路夜市" data-type="飲料" data-price="70">  
+        <h3>忠孝路夜市 —茗陽甘蔗牛奶大王</h3>
+        <img src="29.png" alt="茗陽甘蔗牛奶大王">
+        <p><strong>價格：</strong>70-100元/杯</p>
+        <p>營業時間：14:00–02:00</p>
+        <p>地址：402台中市南區忠孝路與合作街交叉口</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:402台中市南區忠孝路與合作街交叉口" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>這家店已經經營超過50年，以清新甘蔗汁聞名，是逛夜市時消暑的特選飲品。這裡的甘蔗汁加上檸檬、牛奶等搭配，招牌的甘蔗汁加檸檬很順口，更是消暑良品。飲料菜單主要分為五類飲品，包括蔗香、花草香、茶香、奶香、酸甜香，選擇滿多的，有不少傳統風味飲品。</p>
+        
+      </div>
+
+
+      <div class="food-card" data-market="大慶夜市" data-type="甜點" data-price="30"> 
+        <h3>大慶夜市 — 麻糬屋炸麻糬</h3>
+        <img src="04.png" alt=" 麻糬屋炸麻糬">
+        <p><strong>價格：</strong>30-50元/份</p>
+        <p>營業時間：每週五、六、日17:00-24:00</p>
+        <p>地址：台中市南區建國南路一段208號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區建國南路一段208號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>麻糬屋的炸麻糬有多種口味，有花生、巧克力等，有點像是白糖粿的變化版本，點綜合可以自選口味！炸麻糬的表皮酥酥脆脆的，但裡頭Q軟帶有彈性，口感十分討喜，而且甜度剛剛好喔！大慶夜市內的麻糬屋，改良了傳統吃麻糬的黏膩感，特別用酥炸的方式，一口咬下還有清脆的「卡滋」一聲，甚至完全不膩口，嚐起來就像棉花糖！</p>
+       
+      </div>
+      <div class="food-card" data-market="大慶夜市" data-type="小吃" data-price="30">
+        <h3>大慶夜市 — 一也黃金豆乳雞</h3>
+        <img src="30.png" alt=" 一也黃金豆乳雞">
+        <p><strong>價格：</strong>20-60元/份</p>
+        <p>營業時間：17:00-24:00（週一、二、四休）</p>
+        <p>地址：台中市南區建國南路一段208號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區建國南路一段208號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>有賣炸雞丁、雞翅、七里香等，這幾樣都是招牌必點，肉質不柴又香氣十足，還能享受啃骨頭的滋味，難怪許多人都喜歡呢！美味的關鍵在於新鮮的食材、現炸的功夫，還有店家的特調醃料與胡椒粉，都是老闆現場將豆乳漿揉入雞肉內，並且保證現炸，多汁軟嫩的風味！</p>
+       
+      </div>
+      <div class="food-card" data-market="大慶夜市" data-type="飲料" data-price="60">
+        <h3>大慶夜市 — 喜達手沖泰式奶茶</h3>
+        <img src="31.png" alt=" 喜達手沖泰式奶茶">
+        <p><strong>價格：</strong>60元/杯</p>
+        <p>營業時間：17:00~24:00（週一、二、四休）</p>
+        <p>地址：大慶夜市第二大排</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:大慶夜市第二大排" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>特別選用泰國老牌茶葉「手標牌」，並且強調現場沖製，也就是因為手沖，杯杯飲品都是一致的色澤，再加上反覆的沖泡過濾，堆疊出濃郁的風味。除了招牌泰奶，大受好評的還有「玫瑰奶茶」，優雅馥郁的粉色奶茶，還加入了滿滿的可食用玫瑰花瓣，是來到大慶夜市必買、必打卡的招牌飲品阿！店家堅持手沖、不額外加糖，讓大家能喝到最道地的泰式奶茶，很適合各點一杯來喝喝看！</p>
+       
+      </div>
+      <div class="food-card" data-market="大慶夜市" data-type="甜點" data-price="50">
+        <h3>大慶夜市 — 福圓炸湯圓</h3>
+        <img src="32.png" alt=" 福圓炸湯圓">
+        <p><strong>價格：</strong>50-60元/份</p>
+        <p>營業時間：17:00~24:00（週一、二、四休）</p>
+        <p>地址：大慶夜市</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:大慶夜市" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>店內最招牌的吃法是在起鍋後淋上滿滿煉乳，只見老闆每疊加一層湯圓就豪邁的不斷往杯子裡擠上煉乳，最後在灑上採色米果，用料毫不手軟！將紅白小湯圓放入油鍋油炸，炸得膨脹的湯圓起鍋後還會跳來跳去，而被稱作跳舞湯圓。</p>
+       
+      </div>
+       <div class="food-card" data-market="大慶夜市" data-type="小吃" data-price="60">
+        <h3>大慶夜市 — 油吉條Circhurros</h3>
+        <img src="33.png" alt=" 油吉條Circhurros">
+        <p><strong>價格：</strong>60元/份</p>
+        <p>營業時間：17:00~24:00（週三、日固定營業；週五、六不定時）</p>
+        <p>地址：402台中市南區建國南路一段206號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:402台中市南區建國南路一段206號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>到夜市現場可以看到放大版的迴圈形吉拿棒，在油鍋中滋滋作響，恰好金黃酥脆時起鍋，剪成一段段好入口的長度，恰好可以用竹籤邊戳邊吃，還有14種不同的灑料可選，鹹甜各有喜好，也讓時尚的吉拿棒搖身一變，成為走逛夜市最佳嘴饞良伴。現炸的吉拿棒、多樣化的口味深受大家喜愛，有較單純的原味糖粉，也有肉桂、花生等等的口味！</p>
+       
+      </div>
+      <div class="food-card" data-market="大慶夜市" data-type="小吃" data-price="35">
+        <h3>大慶夜市 — 古早味槓子頭</h3>
+        <img src="34.png" alt=" 古早味槓子頭">
+        <p><strong>價格：</strong>35-60元/份</p>
+        <p>營業時間：每週六、日17:00–23:00</p>
+        <p>地址：台中市南區建國南路一段208號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市南區建國南路一段208號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>簡單的一個木桶就成為攤位，槓子頭其實是由老麵揉製而成，熱熱撕開是外酥內軟，原味砂糖槓子頭更是越嚼越香！而且老闆也融入了許多新潮口味，像是酸酸甜甜的蜜金桔，或者直接來個老兵最愛──梅干扣肉等，也是全台夜市少見的特色攤販喔！其中最受歡迎的就是砂糖槓子頭，外酥內軟加上甜甜的內餡，真的很厲害，讓人留下深刻印象。</p>
+       
+      </div>
+      <div class="food-card" data-market="中華路夜市" data-type="主食" data-price="50">
+        <h3>中華路夜市 — 老牌沙茶牛肉</h3>
+        <img src="05.png" alt="老牌沙茶牛肉">
+        <p><strong>價格：</strong>50-100元/份</p>
+        <p>營業時間：18：00～凌晨02：00</p>
+        <p>地址：台中市中區中華路一段111號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區中華路一段111號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>中華路上的人氣攤眾多，往往座無虛席，生意好到誇張。這裡最有名的是牛肉炒麵、牛肉湯，很適合半夜解饞，牛肉炒得香嫩，以花生醬調味過的沙茶十分夠味，而蘿蔔牛肉湯清鮮可口，甚至有網友形容牛肉嫩到不行，讓許多吃客慕名前來光顧。</p>
+        
+      </div>
+      <div class="food-card" data-market="中華路夜市" data-type="飲料" data-price="50">
+        <h3>中華路夜市 — 陳家牛乳大王</h3>
+        <img src="35.png" alt="陳家牛乳大王">
+        <p><strong>價格：</strong>50元/杯</p>
+        <p>營業時間：16：30至售完為止</p>
+        <p>地址：台中市中區中華路一段121號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區中華路一段121號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>1961年左右就在中華路營業的台中木瓜牛乳大王，是夜市的老牌攤位，非常順口，再加上烤麵包，就成了台中人最常吃的夜半輕食，現場還設有座位區，可品嘗剛打好的新鮮木瓜牛奶，不用吸管直接喝下，帶著碎冰的木瓜牛奶，滋味果然更鮮甜。</p>
+        
+      </div>
+      <div class="food-card" data-market="中華路夜市" data-type="小吃" data-price="50">
+        <h3>中華路夜市 — 潭子臭豆腐</h3>
+        <img src="36.png" alt="潭子臭豆腐">
+        <p><strong>價格：</strong>30-60/</p>
+        <p>營業時間：14：00～凌晨01：00</p>
+        <p>地址：台中市中區中華路一段81號  </p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區中華路一段81號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>至今已有40多年歷史，香酥口感讓人一吃難忘，而老闆自家醃製的高麗菜泡菜，沒有紅蘿蔔潤色，很有自家醃製的酸勁，愈吃愈順口。潭子臭豆腐以雙鍋炸為特色，為防來不及炸好臭豆腐，於是設了2油鍋，一鍋先炸至七分熟，再撈到另一鍋高溫酥炸，沒想到這種炸法使得臭豆腐更加香酥，也打響了潭子臭豆腐的名聲。</p>
+        
+      </div>
+      <div class="food-card" data-market="中華路夜市" data-type="主食" data-price="50">
+        <h3>中華路夜市 — 阿全虎咬豬</h3>
+        <img src="37.png" alt="阿全虎咬豬">
+        <p><strong>價格：</strong>35-65元/份</p>
+        <p>營業時間：16:00–03:00，周二公休</p>
+        <p>地址：台中市中區中華路一段145號  </p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區中華路一段145號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>採用蒸籠蒸出來的刈包別於一般麵包，口感更加柔軟同時也更有彈性，配上花生粉、酸菜與靈魂紅燒五花肉，大口咬下，幸福的滋味傾瀉而出，尤其在宵夜時段這種邪惡的滋味可真的是讓人難以忘懷！</p>
+        
+      </div>
+      <div class="food-card" data-market="中華路夜市" data-type="主食" data-price="50">
+        <h3>中華路夜市 — 三代炒麵老擔</h3>
+        <img src="38.png" alt="三代炒麵老擔">
+        <p><strong>價格：</strong>35-70元/份</p>
+        <p>營業時間：18:15–00:00 週日、週一公休</p>
+        <p>地址：台中市中區台灣大道一段562號  </p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區台灣大道一段562號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+
+        <p>麵條在大火翻炒時所散發那銷魂誘人的香氣，翻炒過程逼發的聲響，光用看的就足以被它深深吸引。營業至今已經70多年，主要販售肉絲炒麵、茄汁炒飯與炒米粉，這三道看似家常菜的普通料理，竟養出不少忠實顧客，每到晚餐、宵夜時間都會常常看到大批的人龍在等待，只為一嚐記憶中那美好的味道，可見其魅力多麼深遠。</p>
+        
+      </div>
+      <div class="food-card" data-market="中華路夜市" data-type="小吃" data-price="80">
+        <h3>中華路夜市 — 富鼎旺豬腳</h3>
+        <img src="39.png" alt="富鼎旺豬腳">
+        <p><strong>價格：</strong>80-145/份</p>
+        <p>營業時間：11:00 – 15:00、16:30 – 20:00(週二公休)</p>
+        <p>地址：台中市中區台灣大道一段560號  </p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區台灣大道一段560號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+
+        <p>是曾獲米其林必比登推薦的台中人氣小吃。招牌豬腳有豬腳、腿庫、腿節可以選，腿庫半肥半瘦，肥的部分軟Ｑ不膩，不敢吃肥肉應該也可以接受，瘦肉不乾柴，鹹香唰嘴。小菜類一定要點筍絲，滷得入味又下飯。</p>
+        
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="小吃" data-price="55">
+        <h3>豐原廟東夜市-廟東清蒸蝦仁肉圓</h3>
+        <img src="50.jpg" alt="蝦仁肉圓">
+        <p><strong>價格</strong>55/份(三粒)</p>
+        <p>營業時間：15:00-01:00</p>
+        <p>地址：台中市豐原區中正路167巷入口右手邊第一攤</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷入口右手邊第一攤" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>「廟東清蒸蝦仁肉圓」的肉圓每一顆肉圓都給了一整尾蝦子，相當的大方，肉圓外皮帶著Q彈加上蝦子的Q脆鮮甜，還有醬料的襯托，味道豐富口感有層次，這間蝦仁肉圓是蒸的肉圓，一份有三小顆，並以甜辣醬跟蒜泥當底。</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="小吃" data-price="50">
+        <h3>豐原廟東夜市-廟東川代菱角酥</h3>
+        <img src="51.jpg" alt="菱角酥">
+        <p><strong>價格</strong>50/份(十顆)</p>
+        <p>營業時間：12:00-23:00</p>
+        <p>地址：台中市豐原區中正路167巷1號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>同樣也是廟東夜市門面的「廟東菱角酥」，幾乎可以說是廟東的代表美食了吧！這間50年的老字號菱角酥，無論平日或假日都大排長龍。店家將菱角削成一口大小，裹上特製麵糊下油鍋炸成金黃色，剛出爐的菱角酥外酥內鬆綿的口感，涮嘴到停不下來！</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="小吃" data-price="50">
+        <h3>豐原廟東夜市-彭記東山鴨頭</h3>
+        <img src="52.jpg" alt="彭記東山鴨頭">
+        <p><strong>價格</strong>15-150元/份</p>
+        <p>營業時間：平日 18:30-00:10／週末17:30-00:10</p>
+        <p>地址：台中市豐原區中正路167巷1號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>攤車上陳列的食材都是用老闆獨家的滷汁滷成深色，醬料口味偏甜，滷汁偏甜，鴨頭炸得夠酥很好吃，另外豆腐也是大力推薦。</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="主食" data-price="55">
+        <h3>豐原廟東夜市-正兆蚵仔煎</h3>
+        <img src="53.jpg" alt="蚵仔煎">
+        <p><strong>價格</strong>45-55元/碗</p>
+        <p>營業時間：平日 11:00-01:00／週末 10:00-01:00</p>
+        <p>地址：台中市豐原區中正路167巷3號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷3號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>廟東夜市裡的「正兆蚵仔煎」同樣也是豐原當地人的口袋名單，用肥美飽滿的鮮蚵製作軟Ｑ的蚵仔煎已經是基本，醬料是店家特調的口味，除了偏甜、微微辣的勾芡口感，還有花生醬的香氣飄出，相當濃郁！</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="小吃" data-price="45">
+        <h3>豐原廟東夜市-正老牌豐原肉丸</h3>
+        <img src="54.jpg" alt="正老牌豐原肉圓">
+        <p><strong>價格</strong>肉丸:45元/粒、貢丸:25元/碗</p>
+        <p>營業時間：10:00-22:00／週二公休</p>
+        <p>地址：臺中市豐原區中正路167巷2之7號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:臺中市豐原區中正路167巷2之7號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>在Google地圖上擁有1300多則評論，還能有4.4顆星的「正老牌豐原肉丸」肯定是不容小覷的廟東美食之一！頂著復古的白底紅字大招牌，正老牌肉丸同樣也是在地人從小吃到大的口味之一。店內菜單選項僅有肉丸跟貢丸，炸過的肉丸外皮Ｑ彈但不會太厚，淋上偏甜的醬汁十分契合，吃到尾聲可以將桌上的清湯倒入碗中一起享用，自由調整鹹淡，相當滿足！</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="主食" data-price="110">
+        <h3>豐原廟東夜市-廟東清水排骨麵店</h3>
+        <img src="55.jpg" alt="清水排骨麵">
+        <p><strong>價格</strong>100-110元/碗</p>
+        <p>營業時間：11:30-23:00／週三公休</p>
+        <p>地址：台中市豐原區中正路167巷2之10號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷2之10號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>一碗經典的排骨酥麵上桌，鼻子最先感受到油蔥濃郁的香氣，將炸排骨酥蒸熱後加入高湯和油麵，肉塊軟嫩的口感和濃郁的排骨湯頭一起入口，五感一次被滿足！</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="主食" data-price="45">
+        <h3>豐原廟東夜市-永芳亭扁食肉粽</h3>
+        <img src="56.jpg" alt="扁食肉粽">
+        <p><strong>價格</strong>45-70元/碗</p>
+        <p>營業時間：10:30-23:00</p>
+        <p>地址：台中市豐原區中正路167巷2-12號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷2-12號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>除了粽子、扁食，店家的湯品四神湯也是必喝之一。粽子裡面的餡料是肉燥帶點胡椒香，瘦肉居多但吃進去的口感很嫩不會卡牙齒，有一點點的肥肉吃起來很Ｑ，覺得有淋滷汁的在味道上會有不一樣的層次，沒有淋滷汁的話，粽葉跟糯米的香味都會多一些。</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="小吃" data-price="50">
+        <h3>豐原廟東夜市-一口悶三角圓</h3>
+        <img src="57.jpg" alt="三角圓">
+        <p><strong>價格</strong>40-90元/份</p>
+        <p>營業時間：周一~日(除周六)11:30-22:30/周六11:00~23:00</p>
+        <p>地址：台中市豐原區中正路167巷2-2號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷2-2號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>三角圓口感有點像水晶餃，肉燥很香與三角圓很搭也很契合，花生粉的三角圓就比較突兀，第一口吃會不適應，但再吃一口也覺得不錯。內含鮮肉餡，肉餡鮮甜還有湯汁，而且吃起來有濃濃胡椒香味，肉餡有做特別的醃製處理，吃起來特別好吃，外皮又軟Q有嚼勁。</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="甜點" data-price="60">
+        <h3>豐原廟東夜市-詹家泡泡冰</h3>
+        <img src="58.jpg" alt="泡泡冰">
+        <p><strong>價格</strong>40-60元/碗</p>
+        <p>營業時間：11:00-23:30</p>
+        <p>地址：台中市豐原區中正路167巷10號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區中正路167巷10號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>要是天氣熱想吃冰消暑，這間在地人推薦的詹家泡泡冰不能錯過啊！招牌雙合泡泡冰用的是花生跟花豆，整個拌進泡泡冰內，吃起來綿細跟濃郁的香氣，真的是一口接一口吃不停。</p>
+      
+      </div>
+      <div class="food-card" data-market="豐原廟東夜市" data-type="甜點" data-price="30">
+        <h3>豐原廟東夜市-廟東GUGUGI雞仔燒</h3>
+        <img src="59.jpeg" alt="雞仔燒">
+        <p><strong>價格</strong>原味:30元/5片、綜合:30元/4片</p>
+        <p>營業時間：假日10:00~22:30/週一~周五(除周二)11:30~22:30/週二  14:00~22:30</p>
+        <p>地址：台中市豐原區復興路50號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市豐原區復興路50號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>要是去廟東想找雞蛋糕，那這間廟東咕咕雞仔燒頗推薦，內餡用的實在，雞蛋糕外層微Q內層鬆軟，加上滿滿內餡，確實好吃，也難怪在廟東可以賣超過10年，有機會可以吃吃看</p>
+      
+      </div>
+          <div class="food-card" data-market="東海夜市" data-type="小吃" data-price="50">
+        <h3>東海夜市-東海刈包大王</h3>
+        <img src="60.jpg" alt="刈包">
+        <p><strong>價格</strong>20-50元/份</p>
+        <p>營業時間：星期一～星期日 06:00~01:00</p>
+        <p>地址：台中市龍井區台灣大道五段3巷49號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市龍井區台灣大道五段3巷49號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>東海有名的刈包，當男老闆還上了各種媒體採訪，主打雞腿排與五花肉，會加花生粉、酸菜、香菜，如果有不要添加的佐料必須事先跟老闆說，東海刈包大王也算是來東海夜市必吃的平價美食，紅到已經在逢甲夜市開分店了。</p>
+      </div>
+
+      <div class="food-card" data-market="東海夜市" data-type="小吃" data-price="100">
+        <h3>東海夜市-東海蓮心冰雞爪凍</h3>
+        <img src="61.jpg" alt="雞爪凍">
+        <p><strong>價格</strong>25-640元/盒</p>
+        <p>營業時間：星期一～星期日 10:00~22:00</p>
+        <p>地址：台中市龍井區新興路1巷1號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市龍井區新興路1巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>台中老字號知名排隊小吃，團購美食名店的東海蓮心冰雞爪凍，主打冷滷味料理，必吃招牌雞爪凍，獨家秘方釀造的醬汁，在口中保留了滷汁香，雞爪晶瑩剔透，輕輕咬吸就骨肉分離，不死鹹又香脆涮嘴開胃，是來東海夜市必吃美食之一，也是必買的伴手禮。雞爪凍魯的入味軟嫩，有股中藥香氣，微辣口感，吃了讓人欲罷不能。</p>
+      </div>
+
+      <div class="food-card" data-market="東海夜市" data-type="小吃" data-price="6">
+        <h3>東海夜市-程記福州包</h3>
+        <img src="62.jpg" alt="福州包">
+        <p><strong>價格</strong>6元/個</p>
+        <p>營業時間：星期一～星期日11:00~21:00</p>
+        <p>地址：台中市龍井區新興路東興巷1號 </p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市龍井區新興路東興巷1號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>主打便宜份量大，一次可以加三種醬料，吃起來有種懷念的感覺，很有家鄉味！東海夜市的程記福州包，是會隨手買上幾個的銅板小吃。程記福州包一顆6元，有A及B特殊醬汁可以選擇。</p>
+      </div>
+
+      <div class="food-card" data-market="東海夜市" data-type="甜點" data-price="12">
+        <h3>東海夜市-萬丹紅豆餅</h3>
+        <img src="63.jpg" alt="萬丹紅豆餅">
+        <p><strong>價格</strong>12元/個</p>
+        <p>營業時間：星期一～星期日 11:00~22:00</p>
+        <p>地址：台中市龍井區東興巷</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市龍井區東興巷" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>東海老牌紅豆餅之一，算是點心料理，適合在下午茶時間當點心吃。位置在十字路口的斜對面，有很多種口味，一顆12元。紅豆餅餡料相當飽滿，主要招牌是紅豆及奶油口味。讓喜歡吃紅豆餅的依武瞬間就完食了。</p>
+      </div>
+
+      <div class="food-card" data-market="東海夜市" data-type="甜點" data-price="55">
+        <h3>東海夜市-東海龍門客棧總店</h3>
+        <img src="64.jpg" alt="龍門客棧仙草芋圓之家">
+        <p><strong>價格</strong>45-55元/份</p>
+        <p>營業時間：星期一～星期五 11:30~23:00/星期六～星期日 11:30~23:30</p>
+        <p>地址：台中市龍井區新興路1巷19</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市龍井區新興路1巷19" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>位於東海商圈的「龍門客棧仙草芋圓之家」，是東海知名甜品店，環境乾淨整潔，有多種品項可以選擇，大部分品項價格落在50~65元，蠻大一碗，算是平價美食。
+        招牌是「芋泥綜合芋圓、純豆花」，綜合口味除了芋圓外，配料有「薏仁、紅豆、芋泥」，是有似西部中的主角，都是走非常綿密路線，糖水不會太甜剛剛好，在逛完東海夜市後，很適合來一碗甜湯！</p>
+      </div>
+
+      <div class="food-card" data-market="東海夜市" data-type="主食" data-price="50">
+        <h3>東海夜市-東海黑肉圓</h3>
+        <img src="65.jpg" alt="東海黑肉圓">
+        <p><strong>價格</strong>40-70元/份</p>
+        <p>營業時間：星期一～星期五 15:00~00:00/星期六～星期日 11:00~00:00</p>
+        <p>地址：台中市龍井區台灣大道五段3巷62弄 </p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市龍井區台灣大道五段3巷62弄 " target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>東海黑肉圓算是東海夜市的老店，招牌是肉圓與蚵仔煎，黑肉圓一份二顆50元，肉圓是用蒸的，吃起來比較沒負擔，皮Q偏軟，但口感沒到軟爛的程度（不要硬拿來跟油炸的口感比，因為這是蒸的！），醬汁混著肉圓皮非常的順口，內餡還蠻香的。蚵仔煎比一般的還大份，蚵仔煎的皮煎到酥脆，蚵仔也不算小隻，整體口感不錯。</p>
+      </div>
+
+      <div class="food-card" data-market="旱溪夜市" data-type="甜點" data-price="45">
+        <h3>旱溪夜市-正豐原祖傳鳳梨冰</h3>
+        <img src="66.jpg" alt="正豐原祖傳鳳梨冰">
+        <p><strong>價格</strong>40-45元/杯</p>
+        <p>營業時間：週二、四、五、六17:00~01:00</p>
+        <p>地址：台中市東區旱溪東路一段</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市東區旱溪東路一段" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>正豐原祖傳鳳梨冰靠近旱溪東路一段與振興路這一側，就在夜市入口旁邊，是夜市內超人氣的排隊飲料攤位，也是許多老饕推薦至旱溪夜市必嘗的美食之一。
+        小攤僅簡單販售鳳梨茶、鳳梨冰、鮮奶鳳梨冰等三個品項，正豐原的鳳梨冰呈現冰沙口感，氣味清香、柔和順口，喝來不膩又清涼消暑，鳳梨冰上頭還加上了自家醃製的祖傳蜜鳳梨果肉，酸甜微脆，滋味十分迷人，亦可選擇添加鮮奶的鮮奶鳳梨冰，亦別有一番風味。</p>
+      </div>
+
+      <div class="food-card"data-market="旱溪夜市" data-type="小吃" data-price="60">
+        <h3>旱溪夜市-印度阿三甩餅</h3>
+        <img src="67.jpg" alt="印度阿三甩餅">
+        <p><strong>價格</strong>30-60元/份</p>
+        <p>營業時間：星期二、四、五 18:00~00:00</p>
+        <p>地址：台中市東區旱溪東路一段</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市東區旱溪東路一段" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>雖然在不少地方都可以看到印度阿三甩餅的身影，不過旱溪夜市內的這間印度阿三可是熱門的排隊小攤，常常可以看到攤前長長的排隊人龍。
+        這兒的甩餅現點現甩，再放至鐵鍋上乾烙，口感Q彈亦不顯油膩，口味則是有甜有鹹，從巧克力、奶油、花生，一直到雞肉、鮪魚、咖哩等等通通有，除了單點口味，還可以選擇綜合，一次就能吃到雞肉、鮪魚、咖哩、起司等豐富餡料，他們的咖哩醬汁味道出色，而且也不辣，愛吃咖哩或者怕辣的朋友，都可以試試。</p>
+      </div>
+
+      <div class="food-card" data-market="旱溪夜市" data-type="小吃" data-price="100">
+        <h3>旱溪夜市-一也黃金豆乳雞</h3>
+        <img src="68.jpg" alt="一也黃金豆乳雞">
+        <p><strong>價格</strong>20-100元/份</p>
+        <p>營業時間：每周四五六 16:30-00:30</p>
+        <p>地址：東區旱溪東路一段與振興路口（停車場入口進來）</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:東區旱溪東路一段與振興路口（停車場入口進來）" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>自文心夜市發跡的一也黃金豆乳雞，現在在台中等地已有多間分店，不過許多人最推崇的還是旱溪夜市內的這一間，據說火候掌握最為得宜，廣受饕客歡迎。
+        一也黃金豆乳雞的攤位靠近旱溪東路一段與振興路口停車場入口附近，攤上販售一也招牌的豆乳雞翅，還有雞丁、雞脖子、七里香等品項，香氣四溢十分吸引人，價格平實的現炸雞翅，外表金黃口感香脆，肉質更是滑嫩多汁還帶著淡淡的豆乳香氣，十分美味涮嘴，令人吮指回味。</p>
+      </div>
+
+      <div class="food-card" data-market="旱溪夜市" data-type="小吃" data-price="100">
+        <h3>旱溪夜市-黎品豆乳雞</h3>
+        <img src="69.jpg" alt="黎品豆乳雞">
+        <p><strong>價格</strong>15-200元/份</p>
+        <p>營業時間：星期二、四、五 17:00~23:00</p>
+        <p>地址：台中市東區旱溪東路與振興路口</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市東區旱溪東路與振興路口" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>黎品的豆乳雞只裏豆乳不裏粉，現炸現賣，攤上販售豆乳雞翅、無骨豆乳雞腿塊，外層炸得香酥，裏頭的肉質保有水分，吃來滑嫩又多汁，還可以嚐得到豆乳的清香滋味，鹹香鮮甜非常涮嘴，光吃原味就已經非常夠味，亦可撒上一點胡椒粉及辣椒粉增香，攤上另有販售豆乳花枝丸、豆乳七里香、豆乳脖子等等品項，選擇挺為豐富。 </p>
+      </div>
+
+      <div class="food-card" data-market="旱溪夜市" data-type="小吃" data-price="55">
+        <h3>旱溪夜市-幸運炸彈蔥油餅</h3>
+        <img src="70.jpg" alt="幸運炸彈蔥油餅">
+        <p><strong>價格</strong>35-55元/份</p>
+        <p>營業時間：每周四五六 16:30-00:30</p>
+        <p>地址：東區旱溪東路一段與振興路口（停車場入口進來）</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:東區旱溪東路一段與振興路口（停車場入口進來）" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>旱溪夜市裏頭有不少間販售蔥油餅的攤商，像是頗具人氣、販售傳統蔥油餅的何佳佳蔥油餅，還有食尚玩家介紹過的好蔥食花蓮炸蛋蔥油餅，至於編輯推薦的這間幸運炸蛋蔥油餅，雖然加入夜市的時間不長，但也獲得許多饕客青睞。
+        幸運販售的是近年較為流行的炸蛋蔥油餅，現場擀麵糰下油鍋，餅皮金黃酥脆，除了原味之外，還有小黃瓜、酸菜、玉米、起司等口味可供挑選，想要澎湃點，可以點綜合口味，餡料多到要滿出來，裏頭的酸菜、小黃瓜讓蔥油餅吃來更為爽口，頗為加分。 </p>
+      </div>
+
+      <div class="food-card" data-market="旱溪夜市" data-type="小吃" data-price="70">
+        <h3>旱溪夜市-方臉師傅蒜香豆干</h3>
+        <img src="71.jpg" alt="方臉師傅蒜香豆干">
+        <p><strong>價格</strong>60-70元/份</p>
+        <p>營業時間：星期二、四、五、六 17:30~00:00</p>
+        <p>地址：台中市東區旱溪東路一段</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市東區旱溪東路一段" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>旱溪夜市內的這間方臉師傅為其創始店，最早就是由此起家，許多人到夜市也會吃上一碗他們家的蒜香豆干解解饞。攤上販售蒜香豆干及三杯米血兩種品項，方臉師傅的豆干由中央廚房精心滷至入味，雖然名為豆干，但口感頗為軟嫩，切成小塊後再加上獨門特調醬汁，撒上一些蔥蒜，吃來十分美味，至於三杯米血則是口味獨特、口感香Q，亦受到不少朋友喜愛。 </p>
+      </div>
+
+          <div class="food-card" data-market="梧棲中港觀光夜市" data-type="小吃" data-price="60">
+        <h3>梧棲中港觀光夜市-九記煎餃水煎包</h3>
+        <img src="72.jpg" alt="九記煎餃水煎包">
+        <p><strong>價格</strong>30元/小份、60元/大份</p>
+        <p>營業時間：周二、四至六16:00–01:00</p>
+        <p>地址：台中市梧棲區文昌路文匯街口</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市梧棲區文昌路文匯街口" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>專賣新鮮現包、現點現煎的煎餃水煎包，總是排隊人潮滿滿買氣超旺，每一鍋都是熱騰騰剛出鍋就被搶光光。煎餃外皮軟Q、豬肉餡飽滿鮮甜超好吃，水煎包外皮薄、底部煎的焦脆、一口咬下肉汁濃郁、味道鮮美、不會油膩，而且老闆服務親切，超人氣的銅板美食絕對不能錯過。</p>
+      </div>
+
+      <div class="food-card" data-market="梧棲中港觀光夜市" data-type="小吃" data-price="100">
+        <h3>梧棲中港觀光夜市-閃電李家炸雞</h3>
+        <img src="73.jpg" alt="閃電李家炸雞">
+        <p><strong>價格</strong>25-100元/份</p>
+        <p>營業時間：每周二、五六 16:00-22~00</p>
+        <p>地址：台中市梧棲區文化路一段537號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市梧棲區文化路一段537號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>喜歡吃炸雞的人推薦來買閃電李家炸雞，販賣品項還滿多，尤其鮮嫩多汁的炸雞，是老闆的獨門招牌。熱呼呼，酥炸出漂亮金黃脆皮的炸雞，香酥脆皮、皮香肉嫩，每吃一口都是鮮甜的雞汁，不僅令人齒頰留香，超大份量CP值也超爆表。金黃香酥的雞腿、雞翅和口感酥脆內裡綿密的薯條，可是熱門必點喔！</p>
+      </div>
+
+      <div class="food-card" data-market="梧棲中港觀光夜市" data-type="小吃" data-price="55">
+        <h3>梧棲中港觀光夜市-柯南臭豆腐</h3>
+        <img src="74.jpg" alt="柯南臭豆腐">
+        <p><strong>價格</strong>30-55元/份</p>
+        <p>營業時間：每周一~六  16:50~01:30</p>
+        <p>地址：435台中市梧棲區文化路二段128號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:435台中市梧棲區文化路二段128號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>老闆可能是卡通迷的柯南臭豆腐，緣起於彰化伸港福安宮海尾臭豆腐，攤位前也是客人絡繹不絕，大排長龍只能說是常態。外皮薄脆、內餡多汁的臭豆腐，一份有五塊，老闆會幫你把特製醬料戳洞加在豆腐裡面，味道濃醇的泡菜也是給的毫不手軟，搭配上一碗豬血湯或貢丸湯，太滿足了。</p>
+      </div>
+
+      <div class="food-card" data-market="梧棲中港觀光夜市" data-type="小吃" data-price="200">
+        <h3>梧棲中港觀光夜市-王記-超長薯條&糯米炸</h3>
+        <img src="75.jpg" alt="王記-超長薯條&糯米炸">
+        <p><strong>價格</strong>100-300元/份</p>
+        <p>營業時間：每週二、四、五、六 18：00–01：00</p>
+        <p>地址：台中梧棲區文昌路、文匯街口</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中梧棲區文昌路、文匯街口" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>王記超長薯條採用新鮮馬鈴薯泥，以日本專利模具現壓現炸，並使用植物炸油素食也可食用，令人震驚的超長薯條，好吃又吸睛，夜市裡很多人都手拿著邊走邊吃；鹿港有名的傳統小吃糯米炸，口感外酥內軟，搭配香氣十足本土的花生粉、芝麻粉，絕對讓人一口接一口。</p>
+      </div>
+
+      <div class="food-card" data-market="梧棲中港觀光夜市" data-type="小吃" data-price="50">
+        <h3>梧棲中港觀光夜市-福滿意麵線</h3>
+        <img src="76.jpg" alt="福滿意麵線">
+        <p><strong>價格</strong>35元/小碗、50元/大碗</p>
+        <p>營業時間：每周二、四、五、六  12:30~23:30</p>
+        <p>地址：台中市梧棲區文昌路280號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市梧棲區文昌路280號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>湯頭鮮美濃郁的福滿意麵線，大腸滷得超級入味，還軟嫩彈牙。加上裡頭添加了來自海線，一顆顆渾圓飽滿的新鮮蚵仔，入口肥美綿密又滑順的肉質爆口，肉羹嫩中帶Q、麵線用手工麵線、加上獨特醬汁、增添獨家特色風味，整體滋味絕對令人難忘。</p>
+      </div>
+    
+      <div class="food-card" data-market="梧棲中港觀光夜市" data-type="主食" data-price="340">
+        <h3>梧棲中港觀光夜市-摩托車壽司女孩</h3>
+        <img src="77.jpg" alt="摩托車壽司女孩">
+        <p><strong>價格</strong>35-340元/份</p>
+        <p>營業時間：每週二、四、五、六 18：30–23：30</p>
+        <p>地址：台中市梧棲區文昌路跟文匯街</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市梧棲區文昌路跟文匯街" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>攤位造型就是一台摩托車的摩托車壽司女孩，主打當天現做的手工壽司，搭配新鮮食材，Q彈又粒粒分明的日式風味醋飯和各種餡料，用料紮實的食材與醋飯，酸甜鹹香比例剛剛好。一盒滿滿超有飽足感，是讓人吃了會想再吃的壽司 。</p>
+      </div>
+
+         <div class="food-card" data-market="總站夜市" data-type="甜點" data-price="65">
+        <h3>總站夜市-日好食事 雞蛋糕</h3>
+        <img src="78.jpg" alt="日好食事 雞蛋糕">
+        <p><strong>價格</strong>55-65元/份</p>
+        <p>營業時間：18：00-23：30</p>
+        <p>地址：台中市北屯區敦富路、敦富一街、敦富二街</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北屯區敦富路、敦富一街、敦富二街" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>日好食事雞蛋糕，外表是可愛的不倒翁造型，獨創氣密式麵糊，完整保留新鮮雞蛋的營養，無油、無泡打粉、無香料，吃起來不會脹氣的雞蛋糕，簡單，也可以很不一樣！口味選擇很多，包括原味、乳酪、巧克力、鮮奶卡士達等。聞著有濃濃的蛋香，烤得酥脆的邊緣，裡面鬆鬆軟軟，雞蛋糕用竹籤串起來，讓人吃的津津有味。</p>
+      </div> 
+
+      <div class="food-card" data-market="總站夜市" data-type="小吃" data-price="120">
+        <h3>總站夜市-萬物饃</h3>
+        <img src="79.jpg" alt="萬物饃">
+        <p><strong>價格</strong>65-120元/份</p>
+        <p>營業時間：17:30-23:30，週一、三、五、六、日</p>
+        <p>地址：台中市北屯區敦富路與號敦富一街口【總站夜市】</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北屯區敦富路與號敦富一街口【總站夜市】" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>小小的攤子主要是以煎餅果子以及肉夾饃為主，而且他們還有一個很特別的限量配料“錦灑”！據說這也是雲南當地的一種家常料理，是用豬絞肉搭配各種香料製作而成，有點像漢堡排的感覺，他們的煎餅果子加的蔬菜、起司的量都很足，很有存在感~整體吃起來口感清爽酥脆，而且也可以加辣！但他們的辣味比較偏溫和一點，如果平時有吃辣習慣而且口味比較重的人，建議可以直接大辣起步！</p>
+      </div> 
+
+      <div class="food-card" data-market="總站夜市" data-type="甜點" data-price="60">
+        <h3>總站夜市-波波食堂 Bubble House雞蛋仔專賣</h3>
+        <img src="80.jpg" alt="波波食堂 Bubble House雞蛋仔專賣">
+        <p><strong>價格</strong>30-60元/份</p>
+        <p>營業時間：18：00－22：30</p>
+        <p>地址：台中市北屯區敦富路與號敦富二街口（機車停車場旁）</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北屯區敦富路與號敦富二街口（機車停車場旁）" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>波波食堂 Bubble House雞蛋仔專賣，基底主要有原味、巧克力、抹茶三種口味，可以搭配自己喜歡的餡料或淋醬來做變化。更厲害的是創意鹹品，把鹹蛋黃、三星蔥跟雙園肉鬆和雞蛋仔結合在一起，口味真的超特別，鹹香味四溢，整個好香好好吃。不定期還有獨家口味推出，真的是怎麼吃都不會膩。</p>
+      </div> 
+
+      <div class="food-card" data-market="總站夜市" data-type="小吃" data-price="100">
+        <h3>總站夜市-福江記-粵式無骨咕咾肉</h3>
+        <img src="81.jpg" alt="福江記-粵式無骨咕咾肉">
+        <p><strong>價格</strong>30-100元/份</p>
+        <p>營業時間：17:30–23:00 (週二、四公休)</p>
+        <p>地址：台中市北屯區敦富路與號敦富一街口【總站夜市】</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北屯區敦富路與號敦富一街口【總站夜市】" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>賣的是豆乳雞翅、豆乳三角骨跟花枝丸，他們家的「豆乳雞翅」很大一根，炸到外酥內嫩，吃起來鹹中帶甜，味道還不錯~</p>
+      </div> 
+
+      <div class="food-card" data-market="總站夜市" data-type="小吃" data-price="50">
+        <h3>總站夜市-三合院&三合宴-專業冷滷 招牌辣脆腸</h3>
+        <img src="82.jpg" alt="三合院&三合宴-專業冷滷 招牌辣脆腸">
+        <p><strong>價格</strong>10-50元/份</p>
+        <p>營業時間：週一~日(除二)18：00-00：00</p>
+        <p>地址：台中市中區中華路一段81號</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市中區中華路一段81號" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>三合院-專業冷滷 招牌辣脆腸，是總站夜市的超人氣攤位，經常大排長龍，賣完就提早收工，建議早點去免得錯過熱門品項～祖傳秘方滷製的古早味，以淺滷方式保留新鮮食材原味，吃起來不會太鹹，淋上秘製的家傳銷魂醬，滋味微辣清爽。除了招牌辣脆腸之外，甜不辣、素腰花、小麥捲、米血、小豆干、水晶餃都是人氣必點。</p>
+      </div> 
+
+      <div class="food-card" data-market="總站夜市" data-type="小吃" data-price="140">
+        <h3>總站夜市-灶腳古早味蒜香烏龍豆干</h3>
+        <img src="83.jpg" alt="灶腳古早味蒜香烏龍豆干">
+        <p><strong>價格</strong>55-140元/份</p>
+        <p>營業時間：週一~日(除二、四)17：00-23：30</p>
+        <p>地址：台中市北屯區敦富路總站夜市裡</p>
+        <!-- ✅ 加入地圖連結按鈕 -->
+        <p>
+          <a href="https://www.google.com/maps/search/?api=1&query=地址:台中市北屯區敦富路總站夜市裡" target="_blank">
+            📍 在 Google 地圖查看
+          </a>
+        </p>
+        <p>福江記-粵式無骨咕咾肉，老闆是道地香港人，正宗粵式好滋味。原料堅持使用每日採買的台灣溫體豬，絕不使用回鍋油，薄皮現炸成酥肉原塊，由大廚研發的三款獨門醬料+滿杯蔬果燴炒而成，外表酥脆肉汁滿滿，入口留香難以忘懷，總站夜市新崛起的熱門攤商，記得一定要來嘗試一下喔～</p>
+      </div>
+    </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+      const marketSelect = document.getElementById('marketSelect');
+  const typeSelect = document.getElementById('typeSelect');
+  const priceSelect = document.getElementById('priceSelect');
+  const foodCards = document.querySelectorAll('.food-card');
+  const resultCount = document.getElementById('resultCount');
+
+  function filterFoods() {
+    const selectedMarket = marketSelect.value;
+    const selectedType = typeSelect.value;
+    const selectedPrice = priceSelect.value;
+    let count = 0;
+
+    foodCards.forEach(card => {
+      const market = card.dataset.market;
+      const type = card.dataset.type;
+      const price = parseInt(card.dataset.price);
+
+      let priceMatch = false;
+      if (selectedPrice === "") priceMatch = true;
+      else if (selectedPrice === "1") priceMatch = price <= 100;
+      else if (selectedPrice === "2") priceMatch = price > 101 && price <= 200;
+      else if (selectedPrice === "3") priceMatch = price > 201;
+
+      const isVisible =
+        (selectedMarket === "" || selectedMarket === market) &&
+        (selectedType === "" || selectedType === type) &&
+        priceMatch;
+
+      card.style.display = isVisible ? "block" : "none";
+      if (isVisible) count++;
+    });
+
+    resultCount.textContent = `共 ${count} 筆`;
+    resultCount.style.color = 'white'; 
+  }
+
+  marketSelect.addEventListener("change", filterFoods);
+  typeSelect.addEventListener("change", filterFoods);
+  priceSelect.addEventListener("change", filterFoods);
+
+  // 頁面載入時先跑一次
+  filterFoods();
+
+  </script>
+  <head>
+ <script>
+  document.getElementById('searchBtn').addEventListener('click', function () {
+    const input = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.food-card');
+
+    let matchCount = 0;
+
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      if (text.includes(input)) {
+        card.style.display = 'block';
+        matchCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // 更新結果數量
+    document.getElementById('resultCount').innerText = `共 ${matchCount} 筆`;
+    document.getElementById('resultCount').style.color = 'white';
+
+  });
+</script>
+
+</head>
+
+
+</body>
+</html>
